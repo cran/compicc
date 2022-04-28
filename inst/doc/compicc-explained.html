@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Riley Mulshine, Alan Huebner" />
+
+<meta name="date" content="2022-04-08" />
+
+<title>compicc Explained</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">compicc Explained</h1>
+<h4 class="author">Riley Mulshine, Alan Huebner</h4>
+<h4 class="date">04/08/2022</h4>
+
+
+
+<div id="summary" class="section level1">
+<h1>1. Summary</h1>
+<p>The compicc package is intended for practicioners in a wide range of fields, most notably psychology, medicine, and sports science. It allows users to compare the reliability of two measurement systems or one system at two different time points. Specifically, the functions calculate a (1-<span class="math inline">\(\alpha\)</span>)% confidence interval (CI) for the difference between two intraclass correlation coefficients (ICCs). These methods were first proposed by Ramasundarahettige et al. (2009). For example, one could compare the reliability of two different medical practicioners’ measurements on patients’ shoulder mobility in degrees of rotation (deVet et al. 2011).</p>
+<p>There are two functions in compicc, <code>dep_ci()</code> and <code>indep_ci()</code>. The <code>dep_ci()</code> function calculates the difference of ICCs for the dependent case, when the two samples consist of the same subjects. On the other hand, the <code>indep_ci()</code> function calculates the difference of ICCs for the independent case, when the two samples consist of different subjects.</p>
+<p>In addition, the package contains two sets of two dataframes (four total dataframes) to be used as demonstrations of the functions’ capabilities. These dataframes are titled <code>dep_df1</code> and <code>dep_df2</code>, as well as <code>indep_df1</code> and <code>indep_df2</code>. In Section 3, this document will call the package’s functions with these sets of dataframes and interpret the results for instructional purposes.</p>
+<p>To start, the package is loaded with the code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(compicc)</span></code></pre></div>
+</div>
+<div id="included-elements" class="section level1">
+<h1>2. Included Elements</h1>
+<p>The compicc package includes two different functions: <code>dep_ci()</code> and <code>indep_ci()</code>. Determining which function to use depends on whether the same set of subjects or a different set of subjects were tested in each dataset being compared.</p>
+<div id="confidence-interval-for-dependent-data-dep_ci" class="section level2">
+<h2>2.1. Confidence Interval for Dependent Data: dep_ci()</h2>
+<p>Dependent data refers to the scenario in which the two dataframes consist of the same set of subjects. For example, observations in row 1 of the first dataset are taken from the same subject as observations in row 1 of the second dataset. This must hold true for every row of data, so the observations between datasets are “matched.”</p>
+<p>The <code>dep_ci()</code> function is called with three arguments: <code>data1</code>, <code>data2</code> and <code>conf_level</code>. The arguments <code>data1</code> and <code>data2</code> refer to the two different datasets. The argument <code>conf_level</code> refers to the confidence level of the confidence interval. This value defaults to 0.95 when not defined by the user, representing a 95% confidence interval.</p>
+<p>The function returns three values:</p>
+<ul>
+<li><code>data1ICC</code>: ICC of data1</li>
+<li><code>data2ICC</code>: ICC of data2</li>
+<li><code>confidenceIntervalDifference</code>: dataframe with the lower bound and upper bound of the confidence interval for the difference of the ICC of data1 and data2
+<ul>
+<li><code>confidenceIntervalDifference$lowerBound</code>: lower bound of confidence interval</li>
+<li><code>confidenceIntervalDifference$upperBound</code>: upper bound of confidence interval</li>
+</ul></li>
+</ul>
+<p>The confidence interval represents the interval for the difference <em>ICC(data1) - ICC(data2)</em>.</p>
+</div>
+<div id="confidence-interval-for-inependent-data-indep_ci" class="section level2">
+<h2>2.2. Confidence Interval for Inependent Data: indep_ci()</h2>
+<p>Independent data refers to the scenario in which the two dataframes consist of entirely different sets of subjects. This means there are no subjects with scores in the first dataframe and the second dataframe.</p>
+<p>The <code>indep_ci()</code> function is called with three arguments: <code>data1</code>, <code>data2</code> and <code>conf_level</code>. The arguments <code>data1</code> and <code>data2</code> refer to the two different datasets. The argument <code>conf_level</code> refers to the confidence level of the confidence interval. This value defaults to 0.95 when not defined by the user, representing a 95% confidence interval.</p>
+<p>The function returns three values:</p>
+<ul>
+<li><code>data1ICC</code>: ICC of data1</li>
+<li><code>data2ICC</code>: ICC of data2</li>
+<li><code>confidenceIntervalDifference</code>: dataframe with the lower bound and upper bound of the confidence interval for the difference between the ICC of data1 and data2
+<ul>
+<li><code>confidenceIntervalDifference$lowerBound</code>: lower bound of confidence interval</li>
+<li><code>confidenceIntervalDifference$upperBound</code>: upper bound of confidence interval</li>
+</ul></li>
+</ul>
+<p>The confidence interval represents the interval for the difference <em>ICC(data1) - ICC(data2)</em>.</p>
+</div>
+<div id="included-data" class="section level2">
+<h2>2.3. Included Data</h2>
+<p>The compicc package contains four datasets so that the user may work through examples of the functions within the package. <code>dep_df1</code> and <code>dep_df2</code> are the dataframes for the dependent case, and <code>indep_df1</code> and <code>indep_df2</code> are the dataframes for the independent case.</p>
+<p>First, consider the two dependent dataframes, <code>dep_df1</code> and <code>dep_df2</code>. Both consist of simulated data of four trials of measurements for 100 subjects. The data represents a hypothetical score assigned to the subjects, where the overall mean score is zero. Such an example could be the measurements of subjects by a sensor at two times, and the user is looking to quantify how the sensor’s reliability has changed over time. Each dataframe contains the same 100 subjects (paired observations), meaning the dataframes are dependent. The dataframes are in wide format, meaning each row represents the measurements of one subject across four trials split column-wise. This format is required for all functions in the compicc package to run. Displayed below are the first few rows of <code>dep_df1</code> to show the proper formatting of the datasets.</p>
+<pre><code>##      Trial 1    Trial 2    Trial 3    Trial 4
+## 1  2.7908151  2.9914997  3.1671994  3.7316656
+## 2 -0.3696103 -0.9891107 -1.7069014 -1.3998243
+## 3  0.1631003 -1.0879259 -1.6040934 -1.1937224
+## 4  0.2611442  0.6936286  1.1886768  2.3882749
+## 5 -1.1405719 -1.5913244 -1.4706451 -0.8625495
+## 6 -0.1340875 -0.5238328  0.2003782 -0.6403733</code></pre>
+<p>In contrast, <code>indep_df1</code> and <code>indep_df2</code> consist of simulated data of four trials of measurements for 100 and 80 subjects each, respectively. In this case, consider the situation where the 100 subjects tested in the first dataframe are different than the 80 subjects tested in the second dataframe (i.e. the two samples are independent or non-overlapping). An example of this application is each dataframe containing measurements from one rater, and the user is interested in comparing the reliability of scores from the rater across dataframes. Like the dependent case, both dataframes are in wide format with rows representing the subjects and columns representing the trials.</p>
+<p><strong>Note</strong>: The number of subjects is equal in both dataframes in the dependent case. This is required, since every subject of each dataframe must be found in the other dataframe. This is not the case in the independent dataframes: since the two independent dataframes have completely different sets of subjects, they are allowed to have a different number of subjects/rows.</p>
+</div>
+</div>
+<div id="using-the-functions-with-the-included-data" class="section level1">
+<h1>3. Using the Functions with the Included Data</h1>
+<p>This package provides easily accessible data with the included datasets. The purpose of this is to demonstrate the functions’ outputs and interpretation. Both the dependent and independent case are used as examples.</p>
+<div id="example-with-dependent-data" class="section level2">
+<h2>3.1. Example with Dependent Data</h2>
+<p>This section provides an example of the usage of the <code>dep_ci()</code> function with the package’s provided datasets.</p>
+<p>The arguments of the <code>dep_ci()</code> function are:</p>
+<ul>
+<li><code>data1</code>: the first dataframe (must be in wide format)</li>
+<li><code>data2</code>: the second dataframe (must be in wide format)</li>
+<li><code>conf_level</code>: confidence level of the confidence interval (defaults to 0.95 when not specified)</li>
+</ul>
+<p>For example, the following code computes a 95% confidence interval for the difference between the ICC of <code>dep_df1</code> and <code>dep_df2</code>, storing the output in a variable called <em>result</em>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">dep_ci</span>(dep_df1, dep_df2)</span></code></pre></div>
+<p>The function yields the following output:</p>
+<ul>
+<li>ICC of dep_df1 = <code>result$data1ICC</code> = 0.795187</li>
+<li>ICC of dep_df2 = <code>result$data2ICC</code> = 0.6377282</li>
+<li>Confidence interval for the difference between dep_df1 ICC and dep_df2 ICC = <code>result$confidenceIntervalDifference</code>
+<ul>
+<li>Lower bound of confidence interval = result$confidenceIntervalDifference$lowerBound = 0.0848324</li>
+<li>Upper bound of confidence interval = result$confidenceIntervalDifference$upperBound = 0.2329263</li>
+</ul></li>
+</ul>
+<p>In this case, we are 95% confident that the true difference between the ICC of dep_df1 and the ICC of dep_df2 lies in the interval (0.0848324, 0.2329263). Since the interval is strictly positive and does not include zero, we have enough evidence to conclude that the true ICCs of the sensor at the initial and final timea are not equal. This means the reliability of the measurements of the sensor has changed over time.</p>
+</div>
+<div id="example-with-independent-data" class="section level2">
+<h2>3.2. Example with Independent Data</h2>
+<p>This section provides an example of the usage of the <code>indep_ci()</code> function with the package’s provided datasets.</p>
+<p>The inputs of the <code>indep_ci()</code> function are:</p>
+<ul>
+<li><code>data1</code>: the first dataframe (must be in wide format)</li>
+<li><code>data2</code>: the second dataframe (must be in wide format)</li>
+<li><code>conf_level</code>: confidence level of the confidence interval (defaults to 0.95 when not specified)</li>
+</ul>
+<p>For example, the following code computes the 90% confidence interval for the difference between the ICC of <code>indep_df1</code> and <code>indep_df2</code>, storing the output in a variable called <em>result2</em>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>result2 <span class="ot">&lt;-</span> <span class="fu">indep_ci</span>(indep_df1, indep_df2, <span class="at">conf_level =</span> <span class="fl">0.9</span>)</span></code></pre></div>
+<p>The function yields the following output:</p>
+<ul>
+<li>ICC of indep_df1 = <code>result2$data1ICC</code> = 0.6624369</li>
+<li>ICC of indep_df2 = <code>result2$data2ICC</code> = 0.6913065</li>
+<li>Confidence interval for the difference between indep_df1 ICC and indep_df2 ICC = <code>result2$confidenceIntervalDifference</code>
+<ul>
+<li>Lower bound of confidence interval = <code>result2$confidenceIntervalDifference$lowerBound</code> = -0.1268077</li>
+<li>Upper bound of confidence interval = <code>result2$confidenceIntervalDifference$upperBound</code> = 0.0702803</li>
+</ul></li>
+</ul>
+<p>In this case, we are 90% confident that the true difference between the ICC of <code>indep_df1</code> and the ICC of <code>indep_df2</code> lies in the interval (-0.1268077, 0.0702803). Since the interval includes zero, there is not enough evidence to conclude that the true ICCs of the two dataframes differ.</p>
+</div>
+</div>
+<div id="frequent-errors" class="section level1">
+<h1>4. Frequent Errors</h1>
+<p>To demonstrate the possible errors encountered when using the functions in the compicc package, examples of dataframes that lead to certain errors are described below.</p>
+<div id="unequal-number-of-trials" class="section level2">
+<h2>4.1. Unequal Number of Trials</h2>
+<p>To compute the ICC of a dataframe, every subject must go through the same number of trials during testing. In other words, each row in the dataframe must have the same number of columns. Similarly, each dataframe being compared must have the same number of trials/columns. This means if dataframe 1 consists of four trials per subject, dataframe 2 must consist of exactly four trials per subject. An example of dataframes violating this condition is:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>d1_trial1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">34</span>, <span class="dv">33</span>, <span class="dv">36</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>d1_trial2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">41</span>, <span class="dv">38</span>, <span class="dv">40</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>d1_trial3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">37</span>, <span class="dv">36</span>, <span class="dv">37</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(d1_trial1, d1_trial2, d1_trial3)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>d2_trial1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">33</span>, <span class="dv">35</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>d2_trial2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">43</span>, <span class="dv">41</span>, <span class="dv">42</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>d2_trial3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">36</span>, <span class="dv">36</span>, <span class="dv">38</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>d2_trial4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">29</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(d2_trial1, d2_trial2, d2_trial3, d2_trial4)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">indep_ci</span>(data1, data2)</span></code></pre></div>
+<pre><code>## Error in indep_ci(data1, data2): number of columns in data1 must equal that of data2</code></pre>
+<p>The dataframe <code>data1</code> consists of three trials per subject, but <code>data2</code> holds four trials per subject. The error message informs the user that the number of trials/columns must be equal across dataframes. This error applies to both the <code>dep_ci()</code> and <code>indep_ci()</code> functions.</p>
+</div>
+<div id="unequal-number-of-observations-dependent-case-only" class="section level2">
+<h2>4.2. Unequal Number of Observations (Dependent case only)</h2>
+<p>In order for the two dataframes to be dependent, the subjects/rows must be matched across dataframes. This means row 1 of dataframe1 represents the same subject as row 1 of dataframe2, and so on for each additional row of data. Therefore, if there are an unequal number of subjects/rows between the two dataframes, the function <code>dep_ci()</code> will return an error message. The dataframes cannot be dependent when they have an unequal number of rows of data. Below is an example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>d1_trial1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">34</span>, <span class="dv">33</span>, <span class="dv">36</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>d1_trial2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">41</span>, <span class="dv">38</span>, <span class="dv">40</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>d1_trial3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">37</span>, <span class="dv">36</span>, <span class="dv">37</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(d1_trial1, d1_trial2, d1_trial3)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>d2_trial1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">33</span>, <span class="dv">35</span>, <span class="dv">32</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>d2_trial2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">43</span>, <span class="dv">41</span>, <span class="dv">42</span>, <span class="dv">43</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>d2_trial3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">36</span>, <span class="dv">36</span>, <span class="dv">38</span>, <span class="dv">38</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(d2_trial1, d2_trial2, d2_trial3)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dep_ci</span>(data1, data2)</span></code></pre></div>
+<pre><code>## Error in dep_ci(data1, data2): number of rows in data1 must equal that of data2</code></pre>
+<p>The error message tells the user that the number of rows must be equal across dataframes. When receiving this message, the user should adjust the dataframes to make sure that the subjects tested in each dataframe match each other and are placed in the same row in both dataframes.</p>
+<p>Note: This is not an issue for the independent case. The <code>indep_ci()</code> function accepts dataframes with unequal numbers of observations, since the subjects should not match across dataframes.</p>
+</div>
+<div id="missing-values" class="section level2">
+<h2>4.3. Missing Values</h2>
+<p>The embedded functions in the compicc functions do not work with dataframes that consist of missing values. Therefore, if the user tries to call either the <code>dep_ci()</code> or <code>indep_ci()</code> function with a dataframe that has one or more NA or NaN value, the function will stop running and return an error message. An example of this is shown below:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d1_trial1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">34</span>, <span class="dv">33</span>, <span class="dv">36</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>d1_trial2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">41</span>, <span class="dv">38</span>, <span class="dv">40</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>d1_trial3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">37</span>, <span class="cn">NA</span>, <span class="dv">37</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(d1_trial1, d1_trial2, d1_trial3)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>d2_trial1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">33</span>, <span class="dv">35</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>d2_trial2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">43</span>, <span class="dv">41</span>, <span class="dv">42</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>d2_trial3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">36</span>, <span class="dv">36</span>, <span class="dv">38</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(d2_trial1, d2_trial2, d2_trial3)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dep_ci</span>(data1, data2)</span></code></pre></div>
+<pre><code>## Error in dep_ci(data1, data2): cannot have NA values in dataframe</code></pre>
+<p>The error message states that there cannot be a missing value in either dataframe. The NA value in data1 (d1_trial3) must either be replaced with an imputed value, or subject 2’s results must be discarded in order to use either function.</p>
+</div>
+</div>
+<div id="description-of-calculations" class="section level1">
+<h1>5. Description of Calculations</h1>
+<p>As mentioned above, the functions in the compicc package include intensive calculations derived by Ramasundarahettige et al. (2009).</p>
+<p>The approach to estimating the difference between two ICCs begins with the simple case of one ICC. In this case, the formula of the confidence interval is derived from the central limit theorem and Slutsky’s Theorem:</p>
+<p><span class="math inline">\(L, H = \widehat{\rho} \pm (z_{\alpha/2})\sqrt{(\widehat{var}(\widehat{\rho})}\)</span></p>
+<p>Where L, H are the lower, upper bounds of the confidence interval, <span class="math inline">\(\widehat{\rho}\)</span> is the point estimate of the ICC, and <span class="math inline">\(z_{\alpha/2}\)</span> is the <span class="math inline">\({\alpha/2}\)</span> quantile of the normal distribution.</p>
+<p>Extending this to the difference of two ICCs, the formula becomes:</p>
+<p><strong>Lower bound:</strong> <span class="math inline">\(L = \widehat{\rho_1}-\widehat{\rho_2}-\sqrt{var(\widehat{\rho}_1)+var(\widehat{\rho}_2)}\)</span></p>
+<p><strong>Upper bound:</strong> <span class="math inline">\(U = \widehat{\rho_1}-\widehat{\rho_2}+\sqrt{var(\widehat{\rho}_1)+var(\widehat{\rho}_2)}\)</span></p>
+<p>The formulas are derived from Ramasundarahettige et al. (2009) to yield the following equations:</p>
+<p>For the independent case, the confidence interval is calculated by:</p>
+<p><strong>Lower bound:</strong> <span class="math inline">\(L = \widehat{\rho_1}-\widehat{\rho_2}-\sqrt{(\widehat{\rho_1}-l_1)^2+(u_2-\widehat{\rho_2})^2}\)</span></p>
+<p><strong>Upper bound:</strong> <span class="math inline">\(U = \widehat{\rho_1}-\widehat{\rho_2}+\sqrt{(u_1-\widehat{\rho_1})^2+(\widehat{\rho_2}-l_2)^2}\)</span></p>
+<p>For the dependent case, the confidence interval is calculated by:</p>
+<p><strong>Lower bound:</strong> <span class="math inline">\(L = \widehat{\rho_1}-\widehat{\rho_2}-\sqrt{(\widehat{\rho_1}-l_1)^2-2*\widehat{corr({\rho}_{1}{\rho}_{2})}*(\widehat{\rho_1}-l_1)*(u_2-\widehat{\rho_2})+(u_2-\widehat{\rho_2})^2}\)</span></p>
+<p><strong>Upper bound:</strong> <span class="math inline">\(U = \widehat{\rho_1}-\widehat{\rho_2}+\sqrt{(u_1-\widehat{\rho_1})^2-2*\widehat{corr({\rho}_{1}{\rho}_{2})}*(u_1-\widehat{\rho_1})*(\widehat{\rho_2}-l_2)+(\widehat{\rho_2}-l_2)^2}\)</span></p>
+<p>Where:</p>
+<p><span class="math inline">\(\widehat{corr({\rho}_{1}{\rho}_{2})} = \widehat{\rho}_{12}^2*\frac{\sqrt{k_1*k_2*(k_1-1)*(k_2-1)}}{(1+(k_1-1)\widehat{\rho}_{1})(1+(k_2-1)\widehat{\rho}_{2})}\)</span></p>
+<p><span class="math inline">\(\widehat{\rho_1}\)</span> and <span class="math inline">\(\widehat{\rho_2}\)</span> are the point estimates of the two dataframes’ ICCs, <span class="math inline">\(l_1\)</span> and <span class="math inline">\(u_1\)</span> are the lower and upper bounds of the CI of the ICC of dataframe 1, <span class="math inline">\(l_2\)</span> and <span class="math inline">\(u_2\)</span> are the lower and upper bounds of the CI of the ICC of dataframe 2, <span class="math inline">\(k_1\)</span> and <span class="math inline">\(k_2\)</span> are the number of trials for dataframe 1 and dataframe 2.</p>
+<p>For further reading into the calculations used in this package, refer to Ramasundarahettige et al. (2009).</p>
+</div>
+<div id="references" class="section level1">
+<h1>6. References</h1>
+<p>de Vet, H.C., Terwee, C.B., Mokknink, L. B., &amp; Knol, D.L. (2011). Measurement in medicine: A practical guide. New York, NY: Cambridge University Press.</p>
+<p>Matthias Gamer, Jim Lemon and Ian Fellows Puspendra Singh <a href="mailto:puspendra.pusp22@gmail.com" class="email">puspendra.pusp22@gmail.com</a> (2019). irr: Various Coefficients of Interrater Reliability and Agreement. R package version 0.84.1. <a href="https://CRAN.R-project.org/package=irr" class="uri">https://CRAN.R-project.org/package=irr</a></p>
+<p>Ramasundarahettige, C. F., Donner, A., &amp; Zou, G. Y. (2009). Confidence Interval Construction for a Difference Between Two Dependent Intraclass Correlation Coefficients. <em>Statistics in Medicine</em>, 28(7), 1041–1053. <a href="https://doi.org/10.1002/sim.3523" class="uri">https://doi.org/10.1002/sim.3523</a></p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
